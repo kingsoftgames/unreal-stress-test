@@ -27,4 +27,5 @@ cd $CLIENT_DIR
 for i in $(seq $CLIENT_NUM); do
     echo "Start client $i"
     nohup ./$CLIENT_EXE > /dev/null 2>&1 &
+    sleep 10
 done
