@@ -50,7 +50,7 @@ $CLOUDWATCH \
     --unit "Count" \
     --value "$COUNT"
 
-CPU_PERCENT=$(ps aux | grep $PROCESS_NAME | grep -v grep | awk {'print $3'})
+CPU_PERCENT=$(top -b -n 1 -p `pgrep $PROCESS_NAME` | grep $PROCESS_NAME | awk {'print $9'})
 
 if [ -z "$CPU_PERCENT" ]; then
     echo "No CPU usage with process $PROCESS_NAME"
