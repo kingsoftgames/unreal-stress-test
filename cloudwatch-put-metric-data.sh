@@ -11,6 +11,7 @@
 
 DATA_FILE=$1
 REGION=$2
+PROCESS_NAME=$3
 
 AWS_HOME='/usr/local/bin'
 CURL_HOME='/usr/bin'
@@ -46,3 +47,17 @@ $CLOUDWATCH \
     --metric-name "Client" \
     --unit "Count" \
     --value "$COUNT"
+
+CPU_PERCENT=$(ps aux | grep $PROCESS_NAME | grep -v grep | awk {'print $3'})
+
+if [ -z "$CPU_PERCENT" ]; then
+    echo "No CPU usage with process $PROCESS_NAME"
+    exit 3
+fi
+
+$CLOUDWATCH \
+    --namespace "ROG2/UEServerStressTest" \
+    --dimensions "InstanceId=$INSTANCE_ID" \
+    --metric-name "CPU" \
+    --unit "Percent" \
+    --value "$CPU_PERCENT"
