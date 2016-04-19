@@ -38,6 +38,8 @@ if [ "$DIFF" -gt "30" ]; then
     exit 2
 fi
 
+echo "COUNT: $COUNT"
+
 # get ec2 instance id
 INSTANCE_ID=`$EC2METADATA_HOME/ec2metadata  --instance-id`
 
@@ -54,6 +56,8 @@ if [ -z "$CPU_PERCENT" ]; then
     echo "No CPU usage with process $PROCESS_NAME"
     exit 3
 fi
+
+echo "CPU_PERCENT: $CPU_PERCENT"
 
 $CLOUDWATCH \
     --namespace "ROG2/UEServerStressTest" \
