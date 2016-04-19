@@ -1,0 +1,1 @@
+* * * * * /home/ubuntu/rog2/ueserver-stress-test/cloudwatch-put-metric-data.sh /home/ubuntu/rog2/LinuxServer/ROG2New/ClientCount.txt us-east-1 ROG2NewServer >> ~/rog2/cloudwatch-put-metric-data.log 2>&1

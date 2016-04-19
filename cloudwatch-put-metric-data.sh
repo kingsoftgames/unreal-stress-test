@@ -33,7 +33,7 @@ fi
 NOW=$(date +%s)
 DIFF=$(expr $NOW - $TIMESTAMP)
 
-if [ "$DIFF" -gt "10" ]; then
+if [ "$DIFF" -gt "30" ]; then
     echo "Timestamp outdated."
     exit 2
 fi
