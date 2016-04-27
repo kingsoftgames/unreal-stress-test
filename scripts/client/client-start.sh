@@ -1,12 +1,13 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ]; then
-    echo "error: need 2 parameters. "
+if [ "$#" -ne 3 ]; then
+    echo "error: need 3 parameters. "
     exit 1
 fi
 
 CLIENT_PATH=$1
 CLIENT_NUM=$2
+CLIENT_INTERVAL=$3
 
 CLIENT_DIR=$(dirname $CLIENT_PATH)
 CLIENT_EXE=$(basename $CLIENT_PATH)
@@ -26,6 +27,7 @@ cd $CLIENT_DIR
 
 for i in $(seq $CLIENT_NUM); do
     echo "Start client $i"
-    nohup ./$CLIENT_EXE > /dev/null 2>&1 &
-    sleep 10
+    # note that Unreal will refuse to run as ROOT
+    sudo -u ubuntu nohup ./$CLIENT_EXE > /dev/null 2>&1 &
+    sleep $CLIENT_INTERVAL
 done

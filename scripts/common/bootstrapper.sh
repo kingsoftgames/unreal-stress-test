@@ -7,8 +7,8 @@ cd $(dirname "$0")
 source functions.sh
 
 export REGION=$(get_region)
-export SERVER_OR_CLIENT=$(get_tag ServerOrClient)
-PACKAGE_URL=$(get_tag PackageUrl)
+export SERVER_OR_CLIENT=$(get_tag server-or-client)
+PACKAGE_URL=$(get_tag package-url)
 
 # automatically export all variables in conf files
 set -a

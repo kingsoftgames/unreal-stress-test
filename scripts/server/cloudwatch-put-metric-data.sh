@@ -1,17 +1,9 @@
 #!/bin/bash
 
-#
-# Add this script to crontab with command:
-#
-# crontab -e
-#
-# 1-minute interval
-# * * * * * [path to cloudwatch-put-metric-data.sh] [path to data file] [region]
-# 
-
 DATA_FILE=$1
 REGION=$2
 PROCESS_NAME=$3
+NAMESPACE=$4
 
 AWS_HOME='/usr/local/bin'
 CURL_HOME='/usr/bin'
@@ -44,13 +36,13 @@ echo "COUNT: $COUNT"
 INSTANCE_ID=`$EC2METADATA_HOME/ec2metadata  --instance-id`
 
 $CLOUDWATCH \
-    --namespace "ROG2/UEServerStressTest" \
+    --namespace "$NAMESPACE" \
     --dimensions "InstanceId=$INSTANCE_ID" \
     --metric-name "Client" \
     --unit "Count" \
     --value "$COUNT"
 
-# make sure top does not limit output (ROG2NewServer becomes ROG2NewSer+)
+# make sure top does not limit output (e.g. ROG2NewServer becomes ROG2NewSer+)
 export COLUMNS=1000
 CPU_PERCENT=$(top -b -n 1 -p `pgrep $PROCESS_NAME` | grep $PROCESS_NAME | awk {'print $9'})
 
@@ -62,7 +54,7 @@ if [ -z "$CPU_PERCENT" ]; then
 fi
 
 $CLOUDWATCH \
-    --namespace "ROG2/UEServerStressTest" \
+    --namespace "$NAMESPACE" \
     --dimensions "InstanceId=$INSTANCE_ID" \
     --metric-name "CPU" \
     --unit "Percent" \
