@@ -23,9 +23,8 @@ aws s3 cp $PACKAGE_URL $RUN_DIR/$PACKAGE_FILENAME --region $REGION
 
 pushd $RUN_DIR
     tar xzvf $PACKAGE_FILENAME
-    chown -R ubuntu:ubuntu .
+    chown -R ubuntu:ubuntu *
 popd
 
 # run server/client logic
-# note that Unreal will refuse to run as ROOT
-sudo -u ubuntu ../$SERVER_OR_CLIENT/run.sh
+../$SERVER_OR_CLIENT/run.sh
