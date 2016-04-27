@@ -52,12 +52,12 @@ $CLOUDWATCH \
 
 CPU_PERCENT=$(top -b -n 1 -p `pgrep $PROCESS_NAME` | grep $PROCESS_NAME | awk {'print $9'})
 
+echo "CPU_PERCENT: $CPU_PERCENT"
+
 if [ -z "$CPU_PERCENT" ]; then
     echo "No CPU usage with process $PROCESS_NAME"
     exit 3
 fi
-
-echo "CPU_PERCENT: $CPU_PERCENT"
 
 $CLOUDWATCH \
     --namespace "ROG2/UEServerStressTest" \
