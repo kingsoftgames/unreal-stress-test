@@ -21,8 +21,9 @@ function get_tag() {
     
     aws ec2 describe-tags \
         --region $REGION \
-        --filters "Name=resource-id,Values=$INSTANCE_ID" \
-        --filters "Name=key,Values=$TAG_KEY" \
+        --filters \
+            "Name=resource-id,Values=$INSTANCE_ID" \
+            "Name=key,Values=$TAG_KEY" \
         --query "Tags[0].Value" \
         --output text
 }
