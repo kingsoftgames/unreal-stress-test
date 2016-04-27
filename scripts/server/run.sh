@@ -11,4 +11,4 @@ pushd $RUN_DIR/$BINARY_FOLDER
     sudo -u ubuntu nohup ./$BINARY_NAME > /dev/null 2>&1 &
 popd
 
-sudo -u ubuntu nohup ./cloudwatch-scheduler.sh  > /dev/null 2>&1 &
+nohup ./cloudwatch-scheduler.sh  > /dev/null 2>&1 &
