@@ -50,6 +50,8 @@ $CLOUDWATCH \
     --unit "Count" \
     --value "$COUNT"
 
+# make sure top does not limit output (ROG2NewServer becomes ROG2NewSer+)
+export COLUMNS=1000
 CPU_PERCENT=$(top -b -n 1 -p `pgrep $PROCESS_NAME` | grep $PROCESS_NAME | awk {'print $9'})
 
 echo "CPU_PERCENT: $CPU_PERCENT"
