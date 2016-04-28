@@ -6,14 +6,17 @@ cd $(dirname "$0")
 
 source functions.sh
 
-export REGION=$(get_region)
-export SERVER_OR_CLIENT=$(get_tag server-or-client)
+ENV=$(get_tag env)
+SERVER_OR_CLIENT=$(get_tag server-or-client)
 PACKAGE_URL=$(get_tag package-url)
 
 # automatically export all variables in conf files
 set -a
-    source ../../conf/$REGION/common.conf
-    source ../../conf/$REGION/$SERVER_OR_CLIENT.conf
+    source ../../conf/_default/common.conf
+    source ../../conf/_default/$SERVER_OR_CLIENT.conf
+
+    source ../../conf/$ENV/common.conf
+    source ../../conf/$ENV/$SERVER_OR_CLIENT.conf
 set +a
 
 PACKAGE_FILENAME=$(basename $PACKAGE_URL)

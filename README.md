@@ -4,7 +4,7 @@ A tool that leverages AWS to see how much client an UE4 dedicated server can han
 
 ## Prerequisites
 
-Install the following before using this tool:
+Before using this tool, the following needs to be installed on both EC2 instances (via AMI) and your computer:
 
 ### AWS CLI
 
@@ -42,17 +42,27 @@ echo 'complete -C $(which aws_completer) aws' >> ~/.bash_completion
 
 ## Configure
 
-All configuration files are in `conf/[region]` directory.
+All configuration files are in `conf/[env]` directory.
+
+Default configs are in `conf/_default` directory, they are loaded first, copy them to another directory to override the default value.
 
 ## Run
 
 Launch server:
 
-    ./launch-server.sh [region]
-    
-Launch client:
+    ./launch-server.sh [env]
 
-    ./launch-client.sh [region]
+Launch clients:
+
+    ./launch-client.sh [env] [instance-count]
+
+Terminate server:
+
+    ./terminate-server.sh [env]
+
+Terminate clients:
+
+    ./terminate-clients.sh [env]
 
 ## View Results
 

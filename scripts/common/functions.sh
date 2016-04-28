@@ -6,6 +6,17 @@
 EC2_METADATA_URL=http://169.254.169.254/latest/dynamic/instance-identity/document
 USER_DATA=file://scripts/common/ec2-userdata.sh
 
+function load_conf() {
+    local SERVER_OR_CLIENT=$1
+    local ENV=$2
+    
+    source conf/_default/common.conf
+    source conf/_default/$SERVER_OR_CLIENT.conf
+
+    source conf/$ENV/common.conf
+    source conf/$ENV/$SERVER_OR_CLIENT.conf
+}
+
 function get_instance_id() {
     curl -s $EC2_METADATA_URL | jq .instanceId -r
 }
@@ -59,14 +70,16 @@ function run_instance() {
 }
 
 function tag_instance() {
-    local INSTANCE_ID=$1
-    local SERVER_OR_CLIENT=$2
+    local SERVER_OR_CLIENT=$1
+    local ENV=$2
+    local INSTANCE_ID=$3
     
     local PARAMS="
         --region $REGION
         --resources $INSTANCE_ID
         --tags
             Key=name,Value=$INSTANCE_NAME
+            Key=env,Value=$ENV
             Key=server-or-client,Value=$SERVER_OR_CLIENT
             Key=package-url,Value=$PACKAGE_URL
         "

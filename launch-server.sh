@@ -2,19 +2,18 @@
 
 set -e
 
-REGION=$1
+ENV=$1
 
-if [ -z "$REGION" ]; then
-    echo "Usage: launch-server.sh [region]"
+if [ -z "$ENV" ]; then
+    echo "Usage: launch-server.sh [env]"
     exit 1
 fi
 
 cd $(dirname "$0")
 
-source conf/$REGION/common.conf
-source conf/$REGION/server.conf
-
 source scripts/common/functions.sh
+
+load_conf server $ENV
 
 echo -e "Launching dedicated server on \033[92m$INSTANCE_TYPE\033[0m instance in \033[92m$REGION\033[0m region ..."
 
@@ -24,7 +23,7 @@ echo -e "Instance \033[92m$INSTANCE_ID\033[0m launched."
 
 echo "Tagging instance ..."
 
-tag_instance $INSTANCE_ID server
+tag_instance server $ENV $INSTANCE_ID
 
 echo "Instance tagged successfully."
 

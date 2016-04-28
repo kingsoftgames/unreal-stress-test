@@ -2,20 +2,19 @@
 
 set -e
 
-REGION=$1
+ENV=$1
 EC2_COUNT=$2
 
 if [ "$#" -ne 2 ]; then
-    echo "Usage: launch-clients.sh [region] [ec2-count]"
+    echo "Usage: launch-clients.sh [env] [ec2-count]"
     exit 1
 fi
 
 cd $(dirname "$0")
 
-source conf/$REGION/common.conf
-source conf/$REGION/client.conf
-
 source scripts/common/functions.sh
+
+load_conf client $ENV
 
 echo -e "Launching game client on \033[92m$INSTANCE_TYPE\033[0m instances in \033[92m$REGION\033[0m region ..."
 echo -e "Total \033[92m$EC2_COUNT\033[0m instances, with \033[92m$EC2_LAUNCH_INTERVAL\033[0m seconds interval."
@@ -32,7 +31,7 @@ echo "Instance $INSTANCE_ID launched."
 
 echo "Tagging the instance ..."
 
-tag_instance $INSTANCE_ID client
+tag_instance client $ENV $INSTANCE_ID
 
 echo "Instance tagged successfully."
 

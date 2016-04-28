@@ -2,19 +2,18 @@
 
 set -e
 
-REGION=$1
+ENV=$1
 
 if [ "$#" -ne 1 ]; then
-    echo "Usage: terminate-clients.sh [region]"
+    echo "Usage: terminate-clients.sh [env]"
     exit 1
 fi
 
 cd $(dirname "$0")
 
-source conf/$REGION/common.conf
-source conf/$REGION/client.conf
-
 source scripts/common/functions.sh
+
+load_conf client $ENV
 
 echo -e "Finding game client instances in \033[92m$REGION\033[0m region ..."
 
