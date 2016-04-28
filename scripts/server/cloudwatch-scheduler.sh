@@ -9,7 +9,7 @@ sudo -u ubuntu ./cloudwatch-put-metric-data.sh \
         $REGION \
         $BINARY_NAME \
         $CLOUDWATCH_NAMESPACE \
-    >> $RUN_DIR/cloudwatch-put-metric-data.log 2>&1
+    >> $RUN_DIR/cloudwatch.log 2>&1
 
 sleep $PUT_METRIC_INTERVAL
 
