@@ -14,34 +14,29 @@ cd $(dirname "$0")
 source conf/$REGION/common.conf
 source conf/$REGION/server.conf
 
-echo "Launching dedicated server on EC2 ..."
+source scripts/common/functions.sh
 
-OUTPUT=$(aws ec2 run-instances \
-    --region $REGION \
-    --subnet-id $SUBNET_ID \
-    --security-group-ids $SECURITY_GROUPS \
-    --image-id $IMAGE_ID \
-    --instance-type $INSTANCE_TYPE \
-    --key-name $KEY_NAME \
-    --private-ip-address $PRIVATE_IP_ADDRESS \
-    --iam-instance-profile Name=$IAM_INSTANCE_PROFILE \
-    --user-data file://scripts/common/ec2-userdata.sh \
-    --output json)
+echo -e "Launching dedicated server on \033[92m$INSTANCE_TYPE\033[0m instance in \033[92m$REGION\033[0m region ..."
 
-# echo "$OUTPUT"
+INSTANCE_ID=$(run_instance server)
 
-INSTANCE_ID=$(echo "$OUTPUT" | jq .Instances[0].InstanceId -r)
+echo -e "Instance \033[92m$INSTANCE_ID\033[0m launched."
 
-echo "Instance $INSTANCE_ID launched."
+echo "Tagging instance ..."
 
-echo "Tagging instance $INSTANCE_ID ..."
-    
-aws ec2 create-tags \
-    --region $REGION \
-    --resources $INSTANCE_ID \
-    --tags \
-        Key=name,Value=$INSTANCE_NAME \
-        Key=server-or-client,Value=server \
-        Key=package-url,Value=$PACKAGE_URL
+tag_instance $INSTANCE_ID server
 
 echo "Instance tagged successfully."
+
+echo "Waiting for the instance to become ready ..."
+
+wait_for_instance_ready $INSTANCE_ID
+
+PUBLIC_IP_ADDRESS=$(get_instance_public_ip_address $INSTANCE_ID)
+
+echo -e "Public IP address: \033[92m$PUBLIC_IP_ADDRESS\033[0m"
+
+# echo "Testing server UDP port $UDP_PORT ..."
+# nc -uv $PUBLIC_IP_ADDRESS $UDP_PORT
+
+echo -e "\033[92mInstance launched successfully.\033[0m"
