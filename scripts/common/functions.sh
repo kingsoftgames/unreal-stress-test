@@ -46,6 +46,7 @@ function run_instance() {
     local BLOCK_DEVICE_MAPPING="[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"VolumeSize\":$EBS_SIZE,\"DeleteOnTermination\":true,\"VolumeType\":\"gp2\"}}]"
     
     local PARAMS="
+        --profile $AWSCLI_PROFILE
         --region $REGION
         --subnet-id $SUBNET_ID
         --security-group-ids $SECURITY_GROUPS
@@ -75,6 +76,7 @@ function tag_instance() {
     local INSTANCE_ID=$3
     
     local PARAMS="
+        --profile $AWSCLI_PROFILE
         --region $REGION
         --resources $INSTANCE_ID
         --tags
@@ -91,6 +93,7 @@ function wait_for_instance_ready() {
     local INSTANCE_ID=$1
 
     while INSTANCE_STATE=$(aws ec2 describe-instances \
+        --profile $AWSCLI_PROFILE \
         --region $REGION \
         --instance-ids $INSTANCE_ID \
         --query 'Reservations[*].Instances[*].State.Name' \
@@ -103,16 +106,18 @@ function get_instance_public_ip_address() {
     local INSTANCE_ID=$1
     
     aws ec2 describe-instances \
-    --region $REGION \
-    --instance-ids $INSTANCE_ID \
-    --query 'Reservations[*].Instances[*].PublicIpAddress' \
-    --output text
+        --profile $AWSCLI_PROFILE \
+        --region $REGION \
+        --instance-ids $INSTANCE_ID \
+        --query 'Reservations[*].Instances[*].PublicIpAddress' \
+        --output text
 }
 
 function terminate_instances() {
     local SERVER_OR_CLIENT=$1
     
     local PARAMS="
+        --profile $AWSCLI_PROFILE
         --region $REGION
         --filters
             "Name=instance-state-name,Values=running"
@@ -138,6 +143,7 @@ function terminate_instances() {
         echo "Terminating $COUNT instances."
 
         OUTPUT=$(aws ec2 terminate-instances \
+            --profile $AWSCLI_PROFILE \
             --region $REGION \
             --instance-ids $INSTANCE_IDS \
             --output json)
