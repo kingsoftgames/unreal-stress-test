@@ -2,7 +2,7 @@
 
 set -e
 
-ENV=$1
+env=$1
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: terminate-clients.sh [env]"
@@ -13,7 +13,7 @@ cd $(dirname "$0")
 
 source scripts/common/functions.sh
 
-load_conf client $ENV
+load_conf client $env
 
 echo -e "Finding game client instances in \033[92m$REGION\033[0m region ..."
 

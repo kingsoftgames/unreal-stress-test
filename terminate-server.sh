@@ -2,7 +2,7 @@
 
 set -e
 
-ENV=$1
+env=$1
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: terminate-server.sh [env]"
@@ -13,7 +13,7 @@ cd $(dirname "$0")
 
 source scripts/common/functions.sh
 
-load_conf server $ENV
+load_conf server $env
 
 echo -e "Finding dedicated server instances in \033[92m$REGION\033[0m region ..."
 

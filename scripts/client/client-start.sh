@@ -5,29 +5,29 @@ if [ "$#" -ne 3 ]; then
     exit 1
 fi
 
-CLIENT_PATH=$1
-CLIENT_NUM=$2
-CLIENT_INTERVAL=$3
+client_path=$1
+client_num=$2
+client_interval=$3
 
-CLIENT_DIR=$(dirname $CLIENT_PATH)
-CLIENT_EXE=$(basename $CLIENT_PATH)
+client_dir=$(dirname $client_path)
+client_exe=$(basename $client_path)
 
-echo "CLIENT_DIR: $CLIENT_DIR"
-echo "CLIENT_EXE: $CLIENT_EXE"
-echo "CLIENT_NUM: $CLIENT_NUM"
+echo "client_dir: $client_dir"
+echo "client_exe: $client_exe"
+echo "client_num: $client_num"
 
 NUMBER_REGEX='^[0-9]+$'
 
-if ! [[ $CLIENT_NUM =~ $NUMBER_REGEX ]] ; then
+if ! [[ $client_num =~ $NUMBER_REGEX ]] ; then
     echo "Invalid client num."
     exit 1
 fi
 
-cd $CLIENT_DIR
+cd $client_dir
 
-for i in $(seq $CLIENT_NUM); do
+for i in $(seq $client_num); do
     echo "Start client $i"
     # note that Unreal will refuse to run as ROOT
-    sudo -u ubuntu nohup ./$CLIENT_EXE > /dev/null 2>&1 &
-    sleep $CLIENT_INTERVAL
+    sudo -u ubuntu nohup ./$client_exe > /dev/null 2>&1 &
+    sleep $client_interval
 done

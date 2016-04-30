@@ -1,61 +1,61 @@
 #!/bin/bash
 
-DATA_FILE=$1
-REGION=$2
-PROCESS_NAME=$3
-NAMESPACE=$4
-
 AWS_HOME='/usr/local/bin'
 CURL_HOME='/usr/bin'
 EC2METADATA_HOME='/usr/bin'
 
-CLOUDWATCH="$AWS_HOME/aws cloudwatch put-metric-data --region $REGION"
+data_file=$1
+region=$2
+process_name=$3
+namespace=$4
 
-source $DATA_FILE
-COUNT=$STRESS_TEST_CLIENT_COUNT
-TIMESTAMP=$STRESS_TEST_UNIX_TIMESTAMP
+cloudwatch="$AWS_HOME/aws cloudwatch put-metric-data --region $region"
+
+source $data_file
+count=$STRESS_TEST_CLIENT_COUNT
+timestamp=$STRESS_TEST_UNIX_TIMESTAMP
 
 NUMBER_REGEX='^[0-9]+$'
 
-if ! [[ $COUNT =~ $NUMBER_REGEX ]] ; then
+if ! [[ $count =~ $NUMBER_REGEX ]] ; then
     echo "Unable to get client count."
     exit 1
 fi
 
-NOW=$(date +%s)
-DIFF=$(expr $NOW - $TIMESTAMP)
+now=$(date +%s)
+diff=$(expr $now - $timestamp)
 
-if [ "$DIFF" -gt "30" ]; then
+if [ "$diff" -gt "30" ]; then
     echo "Timestamp outdated."
     exit 2
 fi
 
-echo "COUNT: $COUNT"
+echo "count: $count"
 
 # get ec2 instance id
-INSTANCE_ID=`$EC2METADATA_HOME/ec2metadata  --instance-id`
+instance_id=$($EC2METADATA_HOME/ec2metadata  --instance-id)
 
-$CLOUDWATCH \
-    --namespace "$NAMESPACE" \
-    --dimensions "InstanceId=$INSTANCE_ID" \
+$cloudwatch \
+    --namespace "$namespace" \
+    --dimensions "InstanceId=$instance_id" \
     --metric-name "Client" \
     --unit "Count" \
-    --value "$COUNT"
+    --value "$count"
 
 # make sure top does not limit output (e.g. ROG2NewServer becomes ROG2NewSer+)
 export COLUMNS=1000
-CPU_PERCENT=$(top -b -n 1 -p `pgrep $PROCESS_NAME` | grep $PROCESS_NAME | awk {'print $9'})
+cpu_percent=$(top -b -n 1 -p `pgrep $process_name` | grep $process_name | awk {'print $9'})
 
-echo "CPU_PERCENT: $CPU_PERCENT"
+echo "CPU percent: $cpu_percent"
 
-if [ -z "$CPU_PERCENT" ]; then
-    echo "No CPU usage with process $PROCESS_NAME"
+if [ -z "$cpu_percent" ]; then
+    echo "No CPU usage with process $process_name"
     exit 3
 fi
 
-$CLOUDWATCH \
-    --namespace "$NAMESPACE" \
-    --dimensions "InstanceId=$INSTANCE_ID" \
+$cloudwatch \
+    --namespace "$namespace" \
+    --dimensions "InstanceId=$instance_id" \
     --metric-name "CPU" \
     --unit "Percent" \
-    --value "$CPU_PERCENT"
+    --value "$cpu_percent"
