@@ -59,7 +59,7 @@ function tag_instance() {
             Key=package-url,Value=$PACKAGE_URL
         "
     
-    aws ec2 create-tags $PARAMS
+    aws ec2 create-tags $params
 }
 
 function wait_for_instance_ready() {
