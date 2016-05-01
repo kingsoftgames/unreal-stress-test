@@ -12,7 +12,7 @@ fi
 
 cd $(dirname "$0")
 
-source scripts/common/functions.sh
+source scripts/launcher/functions.sh
 
 load_conf client $env
 

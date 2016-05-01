@@ -10,14 +10,7 @@ env=$(get_tag env)
 server_or_client=$(get_tag server-or-client)
 package_url=$(get_tag package-url)
 
-# automatically export all variables in conf files
-set -a
-    source ../../conf/_default/common.conf
-    source ../../conf/_default/$server_or_client.conf
-
-    source ../../conf/$env/common.conf
-    source ../../conf/$env/$server_or_client.conf
-set +a
+load_conf $server_or_client $env
 
 package_filename=$(basename $package_url)
 
@@ -30,4 +23,4 @@ pushd $RUN_DIR
 popd
 
 # run server/client logic
-../$server_or_client/run.sh
+./$server_or_client/run.sh
