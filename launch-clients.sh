@@ -40,7 +40,7 @@ if [ "$i" -ne "$ec2_count" ]; then
     for i in `seq 1 $EC2_LAUNCH_INTERVAL`;
     do
         sleep 1
-        echo -ne "Waiting for next launch: \033[91m`expr 10 - $i`\033[0m\r"
+        echo -ne "Waiting for next launch: \033[91m`expr $EC2_LAUNCH_INTERVAL - $i`\033[0m\r"
     done
     echo -ne "\r"
 fi
