@@ -16,6 +16,7 @@ function load_conf() {
 function run_instance() {
     local server_or_client=$1
     
+    local placement="Tenancy=$TENANCY"
     local block_device_mapping="[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"VolumeSize\":$EBS_SIZE,\"DeleteOnTermination\":true,\"VolumeType\":\"gp2\"}}]"
     
     local params="
@@ -25,6 +26,7 @@ function run_instance() {
         --security-group-ids $SECURITY_GROUPS
         --image-id $IMAGE_ID
         --instance-type $INSTANCE_TYPE
+        --placement $placement
         --block-device-mapping $block_device_mapping
         --key-name $KEY_NAME
         --iam-instance-profile Name=$IAM_INSTANCE_PROFILE
