@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ "$#" -ne 3 ]; then
-    echo "error: need 3 parameters. "
+if [ "$#" -ne 4 ]; then
+    echo "error: need 4 parameters. "
     exit 1
 fi
 
