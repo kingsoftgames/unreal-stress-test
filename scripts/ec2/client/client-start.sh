@@ -30,6 +30,6 @@ cd $client_dir
 for i in $(seq $client_num); do
     echo "Start client $i"
     # note that Unreal will refuse to run as ROOT
-    sudo -u ubuntu nohup "./$client_exe" "$client_param" > /dev/null 2>&1 &
+    sudo -u ubuntu nohup ./$client_exe $client_param > /dev/null 2>&1 &
     sleep $client_interval
 done
