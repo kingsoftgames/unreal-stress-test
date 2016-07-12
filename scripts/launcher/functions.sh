@@ -62,7 +62,8 @@ function tag_instance() {
         "
     
     aws ec2 create-tags $params
-    aws ec2 create-tags --tags "Key"="exec-params","Value"="$EXEC_PARAMS"
+    # EXEC_PARAMS may contains blank spaces. Double quotes are needed.
+    aws ec2 create-tags --profile $AWSCLI_PROFILE --region $REGION --resources $instance_id --tags "Key"="exec-params","Value"="$EXEC_PARAMS"
 }
 
 function wait_for_instance_ready() {
