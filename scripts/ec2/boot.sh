@@ -32,7 +32,7 @@ pushd $RUN_DIR
     chown -R ubuntu:ubuntu *
 popd
 
-export EXEC_PARAMS="$exec_params"
+export EXEC_PARAMS=$exec_params
 
 # run server/client logic
 ./$server_or_client/run.sh >> $RUN_DIR/run.log 2>&1
