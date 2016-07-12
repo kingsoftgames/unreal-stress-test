@@ -11,6 +11,7 @@ source functions.sh
 env=$(get_tag env)
 server_or_client=$(get_tag server-or-client)
 package_url=$(get_tag package-url)
+exec_params=$(get_tag exec_params)
 
 load_conf $server_or_client $env
 
@@ -30,6 +31,8 @@ pushd $RUN_DIR
     tar xzvf $package_filename
     chown -R ubuntu:ubuntu *
 popd
+
+export EXEC_PARAMS="$exec_params"
 
 # run server/client logic
 ./$server_or_client/run.sh >> $RUN_DIR/run.log 2>&1
