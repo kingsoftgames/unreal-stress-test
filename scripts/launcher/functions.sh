@@ -61,7 +61,6 @@ function tag_instance() {
             Key=package-url,Value=$PACKAGE_URL
         "
     
-    echo $params
     aws ec2 create-tags $params
     # Set exec-params tag
     aws ec2 create-tags --region $REGION --resources $instance_id --tags Key=exec-params,Value="$EXEC_PARAMS"
