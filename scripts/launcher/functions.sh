@@ -60,6 +60,7 @@ function tag_instance() {
             Key=server-or-client,Value=$server_or_client
             Key=package-url,Value=$PACKAGE_URL
             Key=client-per-ec2,Value=$CLIENT_PER_EC2
+            Key=binary-name,Value=$BINARY_NAME
         "
     
     aws ec2 create-tags $params
